@@ -4,7 +4,8 @@ description- this code is using FASTAReader to in take fasta file to analysis th
 
 - /Users/cmdb/qb25-answers/miniproject-assembly-metrics/caenorhabditis_remanei.PRJNA248909.WBPS19.genomic.fa 120.6 MB
 Number of contigs:1591,	Total length:118549266,	Average length:74512.42363293526
-sequence length of the shortest contig at 50% of the total assembly length is 59794567
+sequence length of the shortest contig at 50% of the total assembly length is 1522088
+
 
 - /Users/cmdb/qb25-answers/miniproject-assembly-metrics/caenorhabditis_remanei.PRJNA248911.WBPS19.genomic.fa 126.6 MB
 Number of contigs:912,	Total length:124541912,	Average length:136559.11403508772
@@ -17,4 +18,4 @@ sequence length of the shortest contig at 50% of the total assembly length is 43
 
 - /Users/cmdb/qb25-answers/miniproject-assembly-metrics/caenorhabditis_remanei.PRJNA577507.WBPS19.genomic.fa 132.7 MB
 Number of contigs:187,	Total length:130480874,	Average length:697758.6844919786
-sequence length of the shortest contig at 50% of the total assembly length is 1522088
+sequence length of the shortest contig at 50% of the total assembly length is 21501900
