@@ -1,0 +1,13 @@
+library(tidyverse)
+
+header <- c( "chr", "start", "end", "count" )
+df_kc <-  read_delim(
+  "~/qb25-answers/week1/hg19-kc-count.bed", col_names=header )
+
+plot_a <- ggplot(data = df_kc, aes(x=df_kc$start, y= df_kc$count,scales = "free"))+
+  geom_line()+
+  labs(x= "chromsome", y="count")+
+  facet_wrap(. ~ df_kc$chr)
+
+ggsave("~/Desktop/exercise1.png")
+
