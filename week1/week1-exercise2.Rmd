@@ -1,0 +1,17 @@
+library(tidyverse)
+
+header <- c( "chr", "start", "end", "count" )
+df_kc_hg19 <-  read_delim(
+  "~/qb25-answers/week1/hg19-kc-count.bed", col_names=header )
+  
+df_kc_hg16 <-  read_delim(
+  "~/qb25-answers/week1/hg16-kc-count.bed", col_names=header )
+
+df_combine<- bind_rows( hg19=df_kc_hg19, hg16=df_kc_hg16, .id="assembly" )
+
+plot_combine <- ggplot(data = df_combine, aes(x=df_combine$start, y= df_combine$count,scales = "free", color= df_combine$assembly))+
+  geom_line()+
+  labs(x= "chromsome", y="count")+
+  facet_wrap(. ~ df_combine$chr)
+
+ggsave("~/Desktop/exercise2.png")
