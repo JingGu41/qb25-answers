@@ -11,4 +11,6 @@
 (qb25) cmdb@QuantBio-25 variants %  samtools index A01_01.bam
 (qb25) cmdb@QuantBio-25 variants % samtools idxstats A01_01.bam > A01_01.idxstats
 
+how this visualization compares to haplotypes in BYxRM_GenoData.txt
+forthe snps from CHr01_ 27000-32000, there are majority strain specific SNP variations but the cross does transfer some SNP variation across species 
 
