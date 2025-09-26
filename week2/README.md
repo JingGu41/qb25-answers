@@ -1,4 +1,4 @@
-
+part 1 
 (qb25) cmdb@QuantBio-25 week2 % mkdir genomes
 (qb25) cmdb@QuantBio-25 week2 % cd genomes
 (qb25) cmdb@QuantBio-25 genomes cp ~/Data/References/sacCer3/sacCer3.fa.gz . gunzip sacCer3.fa.gz
@@ -11,6 +11,12 @@
 (qb25) cmdb@QuantBio-25 variants %  samtools index A01_01.bam
 (qb25) cmdb@QuantBio-25 variants % samtools idxstats A01_01.bam > A01_01.idxstats
 
+part 2
 how this visualization compares to haplotypes in BYxRM_GenoData.txt
 forthe snps from CHr01_ 27000-32000, there are majority strain specific SNP variations but the cross does transfer some SNP variation across species 
 
+part 4
+(qb25) cmdb@QuantBio-25 longreads % minimap2 -ax map-ont ~/qb25-answers/week2/genomes/sacCer3.fa ~/qb25-answers/week2/rawdata/ERR8562476.fastq > longreads.sam
+(qb25) cmdb@QuantBio-25 longreads %  samtools sort -o longreads.bam longreads.sam 
+(qb25) cmdb@QuantBio-25 longreads % samtools index longreads.bam
+(qb25) cmdb@QuantBio-25 longreads % samtools idxstats longreads.bam > longreads.idxstats
