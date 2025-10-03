@@ -1,9 +1,21 @@
-(qb25) cmdb@QuantBio-25 variants % ./summarize-sam.py A01_01.sam
-{'chrI': 8935, 'chrVIII': 32411, '*': 3135, 'chrXV': 65696, 'chrVII': 67253, 'chrII': 48852, 'chrX': 44133, 'chrXII': 66342, 'chrXIII': 56740, 'chrIV': 93309, 'chrIII': 19671, 'chrV': 33089, 'chrXI': 41299, 'chrXIV': 47048, 'chrVI': 12330, 'chrIX': 23597, 'chrXVI': 57075, 'chrM': 19152}
-740067
-{'NM:i:1': 153707, 'NM:i:0': 445155, 'NM:i:4': 27141, 'NM:i:2': 67877, 'NM:i:3': 40737, 'NM:i:5': 1420, 'NM:i:6': 629, 'NM:i:7': 254, 'NM:i:8': 6, 'NM:i:12': 1, 'NM:i:13': 1, 'NM:i:11': 1, 'NM:i:22': 1, 'NM:i:18': 1, 'NM:i:17': 1}
-3135
-736932
+chrI 8935
+chrVIII 32411
+* 3135
+chrXV 65696
+chrVII 67253
+chrII 48852
+chrX 44133
+chrXII 66342
+chrXIII 56740
+chrIV 93309
+chrIII 19671
+chrV 33089
+chrXI 41299
+chrXIV 47048
+chrVI 12330
+chrIX 23597
+chrXVI 57075
+chrM 19152
 0 445155
 1 153707
 2 67877
@@ -19,37 +31,3 @@
 17 1
 18 1
 22 1
-(qb25) cmdb@QuantBio-25 variants % 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
