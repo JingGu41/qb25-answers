@@ -36,11 +36,14 @@ for line in my_file:
                 else:
                     continue 
 
-print(dictionary)
-print(sum(dictionary.values()))
-print(mismatch)
-print(perfect_match)
-print(sum(mismatch.values()))
+#print(dictionary)
+#print(sum(dictionary.values()))
+#print(mismatch)
+#print(perfect_match)
+#print(sum(mismatch.values()))
+
+for key in dictionary.keys():
+    print(key, dictionary[key])
 
 for i in mismatch.keys():
     new_key = int(i[5:])
