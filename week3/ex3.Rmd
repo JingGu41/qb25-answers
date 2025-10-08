@@ -1,0 +1,55 @@
+```{r}
+library(tidyverse)
+
+
+df_gt_long<-  read_delim(
+  "~/qb25-answers/week3/gt_long.txt",delim="\t")
+
+df_A01_62<- df_gt_long %>% filter(df_gt_long$sample_ID == "A01_62")
+df_A01_62_chrll<- df_A01_62 %>% filter(df_A01_62$chrom == "chrII")
+df_A01_62_chrll$genotype <- factor(df_A01_62_chrll$genotype, levels = c("0", "1"))
+
+plot <- ggplot(data = df_A01_62_chrll, aes(x=pos, y=genotype, color=genotype))+
+  geom_point()+
+  labs(x= "position", y= "genotype")
+print(plot)
+
+ggsave("~/qb25-answers/week3/A01_62_chrII.png")
+
+
+
+```
+Question 3.3: Do you notice any patterns? What do the transitions indicate?
+there are large chunks of genes belong to one genotype or the other, which indicates that the crossingover is happening 
+```{r}
+
+df_A01_62$genotype <- factor(df_A01_62$genotype, levels = c("0", "1"))
+
+plot_A01_62<- ggplot(data = df_A01_62, aes(x=pos, y=chrom, color=genotype))+
+  geom_point(size = 1.2, alpha = 0.8)+
+  labs(x= "position", y= "chromsome")+
+  facet_grid(sample_ID~., scales= "free_x",space= "free_x")
+print(plot_A01_62)
+
+ggsave("~/qb25-answers/week3/A01_62.png")
+```
+
+```{r,fig}
+df_gt_long$genotype <- factor(df_gt_long$genotype, levels = c("0", "1"))
+
+plot_All_sample<- ggplot(data = df_gt_long, aes(x=pos, y=chrom, color=genotype))+
+  geom_point(size = 1.2, alpha = 0.8)+
+ scale_color_manual(values = c("0" = "#3182bd", "1" = "#e34a33"))+
+  labs(x= "position", y= "genotype")+
+  facet_grid(.~sample_ID, scales= "free_x",space= "free_x")
+print(plot_All_sample)
+
+ggsave("~/qb25-answers/week3/All_sample.png")
+
+ggplot(data = df_gt_long, aes(x=pos, y=chrom, color=genotype))+
+  geom_point(size = 1.2, alpha = 0.8)+
+ scale_color_manual(values = c("0" = "#3182bd", "1" = "#e34a33"))+
+  labs(x= "position", y= "genotype")+
+  facet_grid(.~sample_ID, scales= "free_x",space= "free_x") + 
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+```
