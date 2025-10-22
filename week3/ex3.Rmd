@@ -9,7 +9,7 @@ df_A01_62<- df_gt_long %>% filter(df_gt_long$sample_ID == "A01_62")
 df_A01_62_chrll<- df_A01_62 %>% filter(df_A01_62$chrom == "chrII")
 df_A01_62_chrll$genotype <- factor(df_A01_62_chrll$genotype, levels = c("0", "1"))
 
-plot <- ggplot(data = df_A01_62_chrll, aes(x=pos, y=genotype, color=genotype))+
+plot <- ggplot(data = df_A01_62_chrll, aes(x=pos, y=sample_ID, color=genotype))+
   geom_point()+
   labs(x= "position", y= "genotype")
 print(plot)
