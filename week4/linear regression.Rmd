@@ -1,0 +1,133 @@
+
+```{r}
+library(tidyverse)
+library(broom)
+
+aau1043_dnm<- read.csv("~/qb25-answers/week4/aau1043_dnm.csv")
+
+counts_maternal <- aau1043_dnm %>% filter ( aau1043_dnm$Phase_combined == "mother") %>% nrow() %>% print()
+counts_parental <- aau1043_dnm %>% filter ( aau1043_dnm$Phase_combined == "father") %>% nrow() %>% print()
+
+aau1043_dnm <- aau1043_dnm %>% filter (aau1043_dnm$Phase_combined %in% c("mother","father")) %>% 
+group_by(Proband_id) %>%
+summarise(
+maternal_DNMs =sum(Phase_combined == "mother"), 
+paternal_DNMs= sum(Phase_combined == "father")
+)
+
+```
+```{r}
+aau1043_parental_age <- read.csv("~/qb25-answers/week4/aau1043_parental_age.csv")
+tibble(aau1043_dnm)
+tibble(aau1043_parental_age)
+
+merged_df <- left_join(aau1043_dnm, aau1043_parental_age, by = "Proband_id")
+
+
+```
+
+```{r}
+# Create a scatter plot of the count of maternal DNMs vs. maternal age → save as ex2_a.png
+
+ex2_a <- merged_df %>%
+  ggplot(aes(x= Mother_age, y=maternal_DNMs))+
+  geom_point()+
+  theme(legend.position="none")
+  
+ggsave("~/qb25-answers/week4/ex2_a.png", plot = ex2_a, width =8, height= 4)
+ 
+ex2_b <- merged_df %>%
+  ggplot(aes(x= Father_age, y=paternal_DNMs))+
+  geom_point()+
+  theme(legend.position="none")
+
+ggsave("~/qb25-answers/week4/ex2_b.png", plot = ex2_b, width =8, height= 4)
+
+print(ex2_a)
+print(ex2_b)
+```
+
+```{r}
+
+m1 <- lm(data = merged_df, 
+            formula = "maternal_DNMs ~ 1 + Mother_age")
+
+summary(m1)
+
+#m1 <- lm(maternal_DNMs ~ Mother_age, data = merged_df)
+#summary(m1)
+
+m2 <- lm(data = merged_df, 
+            formula = "paternal_DNMs ~ 1 + Father_age")
+summary(m2)
+
+#m2 <- lm(paternal_DNMs ~ Father_age, data = merged_df)
+#summary(m2)
+
+```
+
+```{r}
+
+plot_df <- merged_df %>% select(maternal_DNMs, paternal_DNMs) %>%
+  pivot_longer(cols = everything(),
+               names_to = "type",
+               values_to = "DNM_count")
+  
+ex2_c <- plot_df %>%
+  ggplot(aes(x= DNM_count, fill = type))+
+  geom_histogram(alpha = 0.5, position = "identity", bins = 30)+
+  theme(legend.position="none")
+print(ex2_c)
+
+ggsave("~/qb25-answers/week4/ex2_c.png", plot = ex2_b, width =8, height= 4)  
+```
+
+```{r}
+t.test(merged_df$maternal_DNMs, merged_df$paternal_DNMs, paired = TRUE)
+
+m3 <- lm(data = merged_df, 
+            formula = "paternal_DNMs ~ 1 + maternal_DNMs")
+summary(m3)
+```
+
+```{r}
+
+#install.packages("tidytuesdayR")
+tuesdata <- tidytuesdayR::tt_load(2025, week = 13)
+pokemon_df <- tuesdata$pokemon_df
+```
+```{r,fig.width=10, fig.height=8}
+pokemon_df_1 <- pokemon_df %>% filter (is.na (type_2)) %>% group_by(type_1)%>%
+  summarise(
+  base_experience_by_type =mean(base_experience)
+  )
+
+pokemon_df_2 <- pokemon_df %>% filter (pokemon_df$type_2 != "NA")%>% group_by(type_1)%>%
+  summarise(
+    base_experience_by_type =mean(base_experience)
+  )
+
+merged_pokemon_df <- left_join(pokemon_df_1, pokemon_df_2, by = "type_1")
+
+
+ 
+ex3_a <-
+  ggplot(data= merged_pokemon_df, aes(x= type_1, y=base_experience_by_type.y))+
+  geom_point()+
+  geom_point(data= merged_pokemon_df, aes(x= type_1, y=base_experience_by_type.x, color = type_1))+
+  scale_y_continuous(name = "base experience")
+  theme(legend.position="none")
+
+print(ex3_a)
+
+ggsave("~/qb25-answers/week4/ex3_a.png", plot = ex3_a, width =10, height= 8)  
+
+m1_pokemon <- lm(data = merged_pokemon_df, 
+            formula = "base_experience_by_type.x ~ 1 + base_experience_by_type.y")
+summary(m1_pokemon)
+
+t.test(merged_pokemon_df$base_experience_by_type.x, merged_pokemon_df$base_experience_by_type.y, paired = TRUE)
+
+```
+
+
