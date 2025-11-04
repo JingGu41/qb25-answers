@@ -8,13 +8,13 @@ matrix <- read.table("~/qb25-answers/week6/read_matrix.tsv")
 matrix <- as.matrix(matrix)
 valid_matrix = matrix[complete.cases(matrix),]
 row_sd= rowSds(valid_matrix)
-sorted_matrix <- valid_matrix[order(row_sd),]
+sorted_matrix <- valid_matrix[order(row_sd),] #get from googling 
 n500_matrix <- sorted_matrix[1:500,]
-n500_matrix <- t(n500_matrix)
 
 ```
 
 ```{r}
+n500_matrix <- t(n500_matrix)
 variable_pca_result= prcomp(n500_matrix)
 summary(variable_pca_result)
 variance <- variable_pca_result$sdev
@@ -50,8 +50,8 @@ PCA_plot <-ggplot(PCA_plotting_df, aes(x = PC1, y = PC2, color = Tissue, shape =
   geom_point(size = 3) +
   labs(
     title = "PCA of Top 500 Variable Genes",
-    x = paste0("PC1 (", round(PCA_summary$norm_variance[1] * 100, 1), "%)"),
-    y = paste0("PC2 (", round(PCA_summary$norm_variance[2] * 100, 1), "%)")
+    x ="PC1",
+    y = "PC2"
   ) 
 
 print(PCA_plot)
@@ -73,8 +73,8 @@ combined_df = combined_df + n500_matrix[seq(3, 21, 3),]
 combined_df = combined_df / 3
 combined_df= t(combined_df)
 
-#gene_sd <- rowSds(combined_df, na.rm = TRUE)
-#filtered_combined <- combined_df[gene_sd > 1, ]
+gene_sd <- rowSds(combined_df, na.rm = TRUE)
+filtered_combined <- combined_df[gene_sd > 1, ]
 
 set.seed(42)
 kmeans_results <- kmeans(scale(as.matrix(combined_df)), centers = 12, nstart = 100)
@@ -92,11 +92,11 @@ ggsave("~/qb25-answers/week6/heatmap.png")
 ```
 ```{r}
 cluster_4_genes <- rownames(combined_df)[kmeans_results$cluster == 4]
-cluster_11_genes <- rownames(combined_df)[kmeans_results$cluster == 11]
+cluster_6_genes <- rownames(combined_df)[kmeans_results$cluster == 6]
 print(cluster_4_genes)
-print(cluster_11_genes)
+print(cluster_6_genes)
 write.table(cluster_4_genes, "cluster4_genes.txt", quote = FALSE, row.names = FALSE, col.names = FALSE)
-write.table(cluster_2_genes, "cluster2_genes.txt", quote = FALSE, row.names = FALSE, col.names = FALSE)
+write.table(cluster_6_genes, "cluster6_genes.txt", quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 ```
 FBgn0266917,FBgn0030269,FBgn0038593,FBgn0039601,FBgn0030055,FBgn0031114,FBgn0034946,FBgn0283510,FBgn0020018,FBgn0029594,FBgn0036305,FBgn0031224,FBgn0026080,FBgn0034269,FBgn0031054,FBgn0031003,FBgn0264691,FBgn0051852,FBgn0032243,FBgn0032030,FBgn0046222,FBgn0014269,FBgn0037117,FBgn0030342,FBgn0036915,FBgn0022027,FBgn0037901,FBgn0019932,FBgn0023081,FBgn0031909,FBgn0034763,FBgn0023509,FBgn0034793,FBgn0036911,FBgn0265574,FBgn0010417,FBgn0003742,FBgn0266667,FBgn0036052,FBgn0022987,FBgn0037852,FBgn0034242,FBgn0039712,FBgn0031871,FBgn0034537,FBgn0038462,FBgn0086785,FBgn0037255,FBgn0038546,FBgn0033376,FBgn0011290,FBgn0028965,FBgn0033859,FBgn0029929,FBgn0034982,FBgn0015828,FBgn0039116,FBgn0000482,FBgn0010750,FBgn0035769,FBgn0037621,FBgn0034727,FBgn0023512,FBgn0031043,FBgn0033609,FBgn0032348,FBgn0052221,FBgn0086446,FBgn0053158,FBgn0035703,FBgn0051301,FBgn0038146
