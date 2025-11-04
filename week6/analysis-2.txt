@@ -1,0 +1,26 @@
+
+
+
+
+
+Analysis Type:	PANTHER Overrepresentation Test (Released 20240807)
+Annotation Version and Release Date:	GO Ontology database DOI:  10.5281/zenodo.16423886 Released 2025-07-22
+Analyzed List:	upload_1 (Drosophila melanogaster)
+Reference List:	Drosophila melanogaster (all genes in database)
+Test Type:	FISHER
+Correction:	FDR
+GO biological process complete	Drosophila melanogaster - REFLIST (13821)	upload_1 (49)	upload_1 (expected)	upload_1 (over/under)	upload_1 (fold Enrichment)	upload_1 (raw P-value)	upload_1 (FDR)
+protein stabilization (GO:0050821)	45	4	.16	+	25.07	1.87E-05	1.35E-02
+regulation of protein stability (GO:0031647)	72	5	.26	+	19.59	5.32E-06	6.43E-03
+positive regulation of RNA metabolic process (GO:0051254)	565	11	2.00	+	5.49	3.42E-06	6.21E-03
+positive regulation of nucleobase-containing compound metabolic process (GO:0045935)	594	11	2.11	+	5.22	5.53E-06	5.73E-03
+macromolecule catabolic process (GO:0009057)	528	9	1.87	+	4.81	8.49E-05	4.40E-02
+positive regulation of macromolecule metabolic process (GO:0010604)	833	14	2.95	+	4.74	6.98E-07	5.06E-03
+positive regulation of metabolic process (GO:0009893)	932	14	3.30	+	4.24	2.66E-06	6.42E-03
+regulation of RNA metabolic process (GO:0051252)	1254	15	4.45	+	3.37	1.74E-05	1.40E-02
+regulation of nucleobase-containing compound metabolic process (GO:0019219)	1319	15	4.68	+	3.21	3.17E-05	2.09E-02
+regulation of primary metabolic process (GO:0080090)	1694	19	6.01	+	3.16	2.12E-06	7.70E-03
+regulation of macromolecule metabolic process (GO:0060255)	1942	20	6.89	+	2.90	3.85E-06	5.58E-03
+positive regulation of cellular process (GO:0048522)	1675	17	5.94	+	2.86	3.45E-05	2.09E-02
+positive regulation of biological process (GO:0048518)	1775	17	6.29	+	2.70	7.28E-05	4.06E-02
+regulation of metabolic process (GO:0019222)	2108	20	7.47	+	2.68	1.37E-05	1.24E-02
