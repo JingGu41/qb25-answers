@@ -1,0 +1,25 @@
+
+
+
+
+
+Analysis Type:	PANTHER Overrepresentation Test (Released 20240807)
+Annotation Version and Release Date:	GO Ontology database DOI:  10.5281/zenodo.16423886 Released 2025-07-22
+Analyzed List:	upload_1 (Drosophila melanogaster)
+Reference List:	Drosophila melanogaster (all genes in database)
+Test Type:	FISHER
+Correction:	FDR
+GO biological process complete	Drosophila melanogaster - REFLIST (13821)	upload_1 (45)	upload_1 (expected)	upload_1 (over/under)	upload_1 (fold Enrichment)	upload_1 (raw P-value)	upload_1 (FDR)
+response to calcium ion (GO:0051592)	4	2	.01	+	 > 100	6.19E-05	4.08E-02
+proteasome-mediated ubiquitin-dependent protein catabolic process (GO:0043161)	211	8	.69	+	11.64	3.43E-07	8.29E-04
+proteasomal protein catabolic process (GO:0010498)	246	8	.80	+	9.99	1.10E-06	1.14E-03
+ubiquitin-dependent protein catabolic process (GO:0006511)	285	9	.93	+	9.70	2.75E-07	9.96E-04
+modification-dependent protein catabolic process (GO:0019941)	293	9	.95	+	9.43	3.47E-07	6.29E-04
+modification-dependent macromolecule catabolic process (GO:0043632)	295	9	.96	+	9.37	3.67E-07	5.33E-04
+protein catabolic process (GO:0030163)	352	10	1.15	+	8.73	1.46E-07	1.06E-03
+proteolysis involved in protein catabolic process (GO:0051603)	336	9	1.09	+	8.23	1.09E-06	1.32E-03
+macromolecule catabolic process (GO:0009057)	528	10	1.72	+	5.82	5.81E-06	5.26E-03
+catabolic process (GO:0009056)	1014	12	3.30	+	3.63	6.78E-05	4.10E-02
+positive regulation of cellular process (GO:0048522)	1675	16	5.45	+	2.93	4.14E-05	3.33E-02
+protein metabolic process (GO:0019538)	1730	16	5.63	+	2.84	6.16E-05	4.47E-02
+positive regulation of biological process (GO:0048518)	1775	16	5.78	+	2.77	8.43E-05	4.70E-02
