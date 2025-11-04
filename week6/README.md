@@ -7,4 +7,10 @@ Fix any problems that the PCA reveals.
 the tissue naming looks weird 
 
 What feature explains the first principal component (simply saying “tissue” is not sufficient)?
-how the most variable gene are differently expressed across the tissues, likely to do the different regulation due to context from the environment 
+how the most variable gene are differently expressed across the tissues, likely to do the different regulation due to context from the environment
+
+section 3
+the categories of enrichments make sense because cluster 4 genes are mainly involve in the metabolic process for macromolecules, nucleobase, RNA because the sample is retrieved from the midgut 
+
+for cluster 6 genes, its mainly involved in ubiquitination catabolic process, it make sense because ubquitination and degradation is vital cellular process and can be differently regualted in different section of the gut. 
+
