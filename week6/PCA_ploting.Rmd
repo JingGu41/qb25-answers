@@ -37,6 +37,7 @@ colnames(PCA_plotting_df) <- c("PC1", "PC2", "Sample")
 PCA_plotting_df <- PCA_plotting_df %>%
   tidyr::separate(Sample, into = c("Tissue", "Replicate"), sep = "_")
 
+#recode from google
 PCA_plotting_df <- PCA_plotting_df %>%
   mutate(Tissue = dplyr::recode(Tissue,
                          "A1" = "anterior 1",
@@ -82,13 +83,13 @@ kmeans_results <- kmeans(scale(as.matrix(combined_df)), centers = 12, nstart = 1
 ordering = order(kmeans_results$cluster)
 data_ordered <- combined_df[ordering, ]
 
-heatmap <-heatmap(as.matrix(data_ordered), Rowv=NA, Colv=NA,
+png(file="heatmap_plot.png")
+heatmap_plot <-heatmap(as.matrix(data_ordered), Rowv=NA, Colv=NA,
         RowSideColors=RColorBrewer::brewer.pal(12, name="Paired")[kmeans_results$cluster[ordering]], scale='none')
+print(heatmap_plot)
+dev.off()
 
-print(heatmap)
-
-ggsave("~/qb25-answers/week6/heatmap.png")
-
+#saving get from google
 ```
 ```{r}
 cluster_4_genes <- rownames(combined_df)[kmeans_results$cluster == 4]
