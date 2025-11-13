@@ -1,0 +1,188 @@
+---
+title: "Untitled"
+output: html_document
+date: "2025-10-31"
+---
+
+```{r}
+library(tidyverse)
+library(broom)
+library(DESeq2)
+```
+
+
+```{r}
+#data loading 
+setwd("~/qb25-answers/week7")
+gene_location_df <- read_delim("~/qb25-answers/week7/gene_locations.txt")
+metadata_downsample <- read_delim("~/qb25-answers/week7/gtex_metadata_downsample.txt")
+count_blood <-read_delim("~/qb25-answers/week7/gtex_whole_blood_counts_downsample.txt")
+
+#change the column with genes to rownames 
+count_blood<- column_to_rownames(count_blood, var = "GENE_NAME")
+metadata_downsample<- column_to_rownames(metadata_downsample, var = "SUBJECT_ID")
+
+#look at he data
+count_blood[1:5,]
+gene_location_df[1:5,]
+metadata_downsample[1:5,]
+```
+
+
+
+```{r}
+#confirm the order from the two dataframe are the same 
+colnames(count_blood) == rownames(metadata_downsample)
+#loading of the DESeq2 information, using the expression and the metadata from each gene, test against sex, age and death 
+dds <- DESeqDataSetFromMatrix(countData = count_blood,
+                              colData = metadata_downsample,
+                              design = ~ SEX + AGE + DTHHRDY)
+#normalization 
+vsd <- vst(dds)
+
+#PCA ploting against each value 
+PCA1 <- plotPCA(vsd, intgroup="SEX")
+PCA1 + ggtitle("PCA of Samples by SEX")
+PCA2 <- plotPCA(vsd, intgroup="AGE")
+PCA2 + ggtitle("PCA of Samples by AGE")
+PCA3 <- plotPCA(vsd, intgroup="DTHHRDY")
+PCA3 + ggtitle("PCA of Samples by DTHHRDY")
+
+ggsave("~/qb25-answers/week7/PCA1.png")
+ggsave("~/qb25-answers/week7/PCA2.png")
+ggsave("~/qb25-answers/week7/PCA3.png")
+
+```
+what proportion of variance in the gene expression data is explained by each of the first two principal components? Which principal components appear to be associated with which subject-level variables? Interpret these patterns in your own words and record your answers as a comment in your code.
+
+PC1 explain 48% of variance and PC2 explain 7% of the variance, PC1 is associated with fast death or ventilator case, while PC2 is more related to the gender 
+
+```{r}
+#create a dataframe of the result 
+vsd_df <- assay(vsd) %>%
+  t() %>%
+  as_tibble()
+
+#bind with metadata
+vsd_df <- bind_cols(metadata_downsample, vsd_df)
+
+#how gene WASH7P is explained by three factors 
+m1 <- lm(formula = WASH7P ~ DTHHRDY + AGE + SEX, data = vsd_df) %>%
+  summary() %>%
+  tidy()
+ print(m1)
+
+#similar for gene SLC25A47
+m2 <- lm(formula =  SLC25A47 ~ DTHHRDY + AGE + SEX, data = vsd_df) %>%
+  summary() %>%
+  tidy()
+ print(m2)
+```
+Does WASH7P show significant evidence of sex-differential expression (and if so, in which direction)? Explain your answer.
+
+no, because the p-value is not significant, but its slightly positive so its slightly non sigiificant for male 
+
+Now repeat your analysis for the gene SLC25A47. Does this gene show evidence of sex-differential expression (and if so, in which direction)? Explain your answer.
+yes, its significant and being positive, so its favors male 
+
+
+```{r}
+#using DESeq 
+dds <- DESeq(dds)
+```
+
+```{r}
+res_sex <- results(dds, name = "SEX_male_vs_female")  %>%
+  as_tibble(rownames = "GENE_NAME")
+print(res_sex)
+```
+
+```{r}
+significant_res_sex <- res_sex %>% filter( !is.na(padj))
+print(significant_res_sex)
+padj_significant_res_sex <- significant_res_sex[significant_res_sex$padj < 0.1,]
+print(padj_significant_res_sex)
+nrow(padj_significant_res_sex)
+
+
+```
+How many genes exhibit significant differential expression between males and females at a 10% FDR?
+262 genes 
+
+```{r}
+res_sex<-left_join( res_sex, gene_location_df, by = "GENE_NAME")
+print(res_sex)
+#arrange from google
+res_sex <- res_sex %>% arrange(padj)
+print(res_sex)
+
+WASH7P_result <- res_sex %>% filter(res_sex$GENE_NAME == "WASH7P")
+SLC25A47_result <- res_sex %>% filter(res_sex$GENE_NAME == "SLC25A47")
+print(WASH7P_result)
+print(SLC25A47_result)
+```
+Examine your top hits. Which chromosomes encode the genes that are most strongly upregulated in males versus females, respectively? Are there more male-upregulated genes or female-upregulated genes near the top of the list? Interpret these results in your own words.
+
+chromosome Y is most strongly upregulated in male, chromosome X is most strongly upregulated in female
+more males near the top of the list, these results make sense because there is no Y chromosome in female so the baseline expression is 0
+and any expression from male side will be fully explained by sex and have small p-value. similiar for X chromosome because female have 2 X chromosome so they will have higher expression 
+
+Examine the results for the two genes (WASH7P and SLC25A47) that you had previously tested with the basic linear regression model in step 2.1. Are the results broadly consistent?
+
+they are consistent at determining the significance. WASH7P is not significant in both method and SLC25A47 is significant in both testing
+
+In your written interpretation of results, add a short reflection (2–3 sentences) on how your analysis illustrates the trade-off between false positives and false negatives. For example, what happens if you use a very stringent FDR threshold (e.g., 1 %) versus a lenient one (e.g., 20 %)? Which type of error (false positive or false negative) would you expect to increase or decrease under each scenario? Briefly comment on how sample size and effect size might influence the power of your analysis to detect truly differentially expressed genes.
+
+using stringent FDR threhold will eliminate a lot of false positive but at the same time will have lots of false negative because the strict bar, using a lenient will have less false negative but at the same time lots of false positive. sample size will allow detection of small effect size, might include false positive, while small sample size only allow detection of very strong signal, detecting strongly differentially expressed genes.  
+
+```{r}
+res_death <- results(dds, name = "DTHHRDY_ventilator_case_vs_fast_death_of_natural_causes")  %>%
+  as_tibble(rownames = "GENE_NAME")
+print(res_death)
+
+significant_res_death <- res_death %>% filter( !is.na(padj))
+print(significant_res_death)
+padj_significant_res_death <- significant_res_death[significant_res_death$padj < 0.1,]
+print(padj_significant_res_death)
+nrow(padj_significant_res_death)
+
+```
+How many genes are differentially expressed according to death classification at a 10% FDR?
+16069 genes 
+
+```{r}
+#transformation code from jess 
+metadata_downsample_shuffled <- transform(metadata_downsample, SEX = sample(SEX))
+shuffled_dds <- DESeqDataSetFromMatrix(countData = count_blood,
+                              colData = metadata_downsample_shuffled,
+                              design = ~ SEX + AGE + DTHHRDY)
+shuffled_dds <- DESeq(shuffled_dds)
+```
+
+```{r}
+shuffled_res_sex <- results(shuffled_dds, name = "SEX_male_vs_female")  %>%
+  as_tibble(rownames = "GENE_NAME")
+print(shuffled_res_sex)
+
+shuffled_significant_res_sex <- shuffled_res_sex %>% filter( !is.na(padj))
+print(shuffled_significant_res_sex)
+shuffled_padj_significant_res_sex <- shuffled_significant_res_sex[shuffled_significant_res_sex$padj < 0.1,]
+print(shuffled_padj_significant_res_sex)
+nrow(shuffled_padj_significant_res_sex)
+```
+How many genes appear “significant” in this permuted analysis at a 10 % FDR? These are, by definition, false positives, because the labels no longer correspond to real biological sex. Compare this number to the count from your real (non-permuted) analysis. What does this suggest about how well the FDR threshold controls the expected rate of false discoveries in large-scale RNA-seq experiments?
+
+12 genes appear to be significant. 12/262 is about 0.046 which is a small threshold so I think the FDR threshold is approiate 
+```{r}
+sex_df <- ggplot(res_sex, aes(x= log2FoldChange, y= -log10(padj), colour = abs(log2FoldChange)>1 & padj<0.1))+
+  geom_point()+
+   labs(
+    title = "sex differentiatl expressed genes"
+  )
+  
+print(sex_df)
+
+ggsave("~/qb25-answers/week7/volcano_plot.png")
+
+```
+
