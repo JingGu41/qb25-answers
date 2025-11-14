@@ -8,7 +8,12 @@ matrix <- read.table("~/qb25-answers/week6/read_matrix.tsv")
 matrix <- as.matrix(matrix)
 valid_matrix = matrix[complete.cases(matrix),]
 row_sd= rowSds(valid_matrix)
-sorted_matrix <- valid_matrix[order(row_sd),] #get from googling 
+
+#fixed the issue in the PCA ploting 
+corrected_dataset <- valid_matrix
+corrected_dataset[,12:13] <- valid_matrix[,13:12]
+corrected_dataset
+sorted_matrix <- corrected_dataset[order(row_sd, decreasing= TRUE),] #get from googling 
 n500_matrix <- sorted_matrix[1:500,]
 
 ```
@@ -37,7 +42,10 @@ colnames(PCA_plotting_df) <- c("PC1", "PC2", "Sample")
 PCA_plotting_df <- PCA_plotting_df %>%
   tidyr::separate(Sample, into = c("Tissue", "Replicate"), sep = "_")
 
-#recode from google
+#PCA_plotting_df <- PCA_plotting_df[,c""]
+#df <- df[, c("SampleID", "Tissue", "Replicate", "GeneA", "GeneB")]
+
+#labeling obtained from google
 PCA_plotting_df <- PCA_plotting_df %>%
   mutate(Tissue = dplyr::recode(Tissue,
                          "A1" = "anterior 1",
@@ -47,6 +55,7 @@ PCA_plotting_df <- PCA_plotting_df %>%
                          "Fe" = "iron",
                          "P1" = "posterior 1",
                          "P2.4" = "posterior 2, 4"))
+
 PCA_plot <-ggplot(PCA_plotting_df, aes(x = PC1, y = PC2, color = Tissue, shape = Replicate)) +
   geom_point(size = 3) +
   labs(
@@ -68,28 +77,31 @@ ggsave("~/qb25-answers/week6/Exercise_1_variance_barchart.png")
 ```
 
 ```{r}
-combined_df = n500_matrix[seq(1, 21, 3),]
-combined_df= combined_df + n500_matrix[seq(2, 21, 3),]
-combined_df = combined_df + n500_matrix[seq(3, 21, 3),]
+combined_df = sorted_matrix[,seq(1, 21, 3)]
+combined_df= combined_df + sorted_matrix[,seq(2, 21, 3)]
+combined_df = combined_df + sorted_matrix[,seq(3, 21, 3)]
 combined_df = combined_df / 3
-combined_df= t(combined_df)
+
 
 gene_sd <- rowSds(combined_df, na.rm = TRUE)
 filtered_combined <- combined_df[gene_sd > 1, ]
 
 set.seed(42)
-kmeans_results <- kmeans(scale(as.matrix(combined_df)), centers = 12, nstart = 100)
+kmeans_results <- kmeans(scale(filtered_combined), centers = 12, nstart = 100)
 
-ordering = order(kmeans_results$cluster)
-data_ordered <- combined_df[ordering, ]
+cluster_label <- kmeans_results$cluster
+ordering <- order(cluster_label)
+data_ordered <- filtered_combined[ordering, ]
+label_ordered <- cluster_label[ordering]
 
 png(file="heatmap_plot.png")
 heatmap_plot <-heatmap(as.matrix(data_ordered), Rowv=NA, Colv=NA,
-        RowSideColors=RColorBrewer::brewer.pal(12, name="Paired")[kmeans_results$cluster[ordering]], scale='none')
-print(heatmap_plot)
+        RowSideColors=RColorBrewer::brewer.pal(12, "Paired")[label_ordered], scale='none')
 dev.off()
 
 #saving get from google
+
+
 ```
 ```{r}
 cluster_4_genes <- rownames(combined_df)[kmeans_results$cluster == 4]
