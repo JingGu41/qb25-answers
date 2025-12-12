@@ -82,8 +82,8 @@ print(Traceback_matrix)
 # and sequence2_alignment in later code
 i = len(sequence1)
 j = len(sequence2)
-alignment_1 = " "
-alignment_2 = " "
+alignment_1 = ""
+alignment_2 = ""
 
 while i != 0 or j != 0:
 	#print(i,j)
