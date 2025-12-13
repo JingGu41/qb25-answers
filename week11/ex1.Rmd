@@ -1,0 +1,222 @@
+
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+
+setwd("/Users/cmdb/qb25-answers/week11")
+
+coverage_3x_df <- read.table("genome_coverage_3x.txt", header = FALSE)
+colnames(coverage_3x_df) <- c("coverage")
+
+xs_3x_df <- read.table("coverage_values_3x.txt", header = FALSE)
+colnames(xs_3x_df) <- c("xs")
+
+poisson_3x_df <- read.table("poisson_estimates_3x.txt", header = FALSE)
+colnames(poisson_3x_df) <- c("poisson")
+
+normal_3x_df <- read.table("normal_estimates_3x.txt", header = FALSE)
+colnames(normal_3x_df) <- c("normal")
+
+dist_3x_df <- data.frame(
+  xs = xs_3x_df$xs,
+  poisson = poisson_3x_df$poisson,
+  normal = normal_3x_df$normal
+)
+
+Total <- nrow(coverage_3x_df)       
+bin_width <- 1               
+
+poisson_counts <- dist_3x_df$poisson * Total
+normal_counts  <- dist_3x_df$normal * Total * bin_width
+
+dist_3x_df$poisson <- poisson_counts
+dist_3x_df$normal  <- normal_counts
+
+graph <- ggplot() +
+  
+  # Histogram of coverage
+  geom_histogram(
+    data = coverage_3x_df,
+    aes(x = coverage),
+    binwidth = 1,
+    fill = "lightsteelblue1",
+    color = "black",
+    boundary = 0
+  ) +
+  
+  # Poisson distribution
+  geom_line(
+    data = dist_3x_df,
+    aes(x = xs, y = poisson, color = "Poisson"),
+    size = 1
+  ) +
+  
+  # Normal distribution 
+  geom_line(
+    data = dist_3x_df,
+    aes(x = xs, y = normal, color = "Normal"),
+    size = 1,
+    linetype = "dashed"
+  ) +
+  
+  labs(
+    title = "Genome Coverage Distribution_3x",
+    x = "Coverage",
+    y = "Frequency",
+    color = "Distributions"
+  ) +
+  scale_color_manual(values = c(
+    "Poisson" = "limegreen",
+    "Normal" = "mediumorchid"
+  )) +
+  theme_minimal(base_size = 14)
+print(graph)
+
+ggsave("ex1_3x_cov.png")
+```
+
+```{r}
+#------------------------------Step 1.5-----------------------------------------
+coverage_10x_df <- read.table("genome_coverage_10x.txt", header = FALSE)
+colnames(coverage_10x_df) <- c("coverage")
+
+xs_10x_df <- read.table("coverage_values_10x.txt", header = FALSE)
+colnames(xs_10x_df) <- c("xs")
+
+poisson_10x_df <- read.table("poisson_estimates_10x.txt", header = FALSE)
+colnames(poisson_10x_df) <- c("poisson")
+
+normal_10x_df <- read.table("normal_estimates_10x.txt", header = FALSE)
+colnames(normal_10x_df) <- c("normal")
+
+dist_10x_df <- data.frame(
+  xs = xs_10x_df$xs,
+  poisson = poisson_10x_df$poisson,
+  normal = normal_10x_df$normal
+)
+
+Total <- nrow(coverage_10x_df)       
+bin_width <- 1               
+
+poisson_counts <- dist_10x_df$poisson * Total
+normal_counts  <- dist_10x_df$normal * Total * bin_width
+
+dist_10x_df$poisson <- poisson_counts
+dist_10x_df$normal  <- normal_counts
+
+graph <- ggplot() +
+  
+  # Histogram of coverage
+  geom_histogram(
+    data = coverage_10x_df,
+    aes(x = coverage),
+    binwidth = 1,
+    fill = "lightsteelblue1",
+    color = "black",
+    boundary = 0
+  ) +
+  
+  # Poisson distribution
+  geom_line(
+    data = dist_10x_df,
+    aes(x = xs, y = poisson, color = "Poisson"),
+    size = 1
+  ) +
+  
+  # Normal distribution
+  geom_line(
+    data = dist_10x_df,
+    aes(x = xs, y = normal, color = "Normal"),
+    size = 1,
+    linetype = "dashed"
+  ) +
+  
+  labs(
+    title = "Genome Coverage Distribution_10x",
+    x = "Coverage",
+    y = "Frequency",
+    color = "Distributions"
+  ) +
+  scale_color_manual(values = c(
+    "Poisson" = "limegreen",
+    "Normal" = "mediumorchid"
+  )) +
+  theme_minimal(base_size = 14)
+print(graph)
+
+ggsave("ex1_10x_cov.png")
+```
+
+```{r}
+#------------------------------Step 1.6-----------------------------------------
+coverage_30x_df <- read.table("genome_coverage_30x.txt", header = FALSE)
+colnames(coverage_30x_df) <- c("coverage")
+
+xs_30x_df <- read.table("coverage_values_30x.txt", header = FALSE)
+colnames(xs_30x_df) <- c("xs")
+
+poisson_30x_df <- read.table("poisson_estimates_30x.txt", header = FALSE)
+colnames(poisson_30x_df) <- c("poisson")
+
+normal_30x_df <- read.table("normal_estimates_30x.txt", header = FALSE)
+colnames(normal_30x_df) <- c("normal")
+
+dist_30x_df <- data.frame(
+  xs = xs_30x_df$xs,
+  poisson = poisson_30x_df$poisson,
+  normal = normal_30x_df$normal
+)
+
+Total <- nrow(coverage_30x_df)       
+bin_width <- 1               
+
+poisson_counts <- dist_30x_df$poisson * Total
+normal_counts  <- dist_30x_df$normal * Total * bin_width
+
+dist_30x_df$poisson <- poisson_counts
+dist_30x_df$normal  <- normal_counts
+
+graph <- ggplot() +
+  
+  # Histogram of coverage
+  geom_histogram(
+    data = coverage_30x_df,
+    aes(x = coverage),
+    binwidth = 1,
+    fill = "lightsteelblue1",
+    color = "black",
+    boundary = 0
+  ) +
+  
+  # Poisson distribution
+  geom_line(
+    data = dist_30x_df,
+    aes(x = xs, y = poisson, color = "Poisson"),
+    size = 1
+  ) +
+  
+  # Normal distribution
+  geom_line(
+    data = dist_30x_df,
+    aes(x = xs, y = normal, color = "Normal"),
+    size = 1,
+    linetype = "dashed"
+  ) +
+  
+  labs(
+    title = "Genome Coverage Distribution_30x",
+    x = "Coverage",
+    y = "Frequency",
+    color = "Distributions"
+  ) +
+  scale_color_manual(values = c(
+    "Poisson" = "limegreen",
+    "Normal" = "mediumorchid"
+  )) +
+  theme_minimal(base_size = 14)
+print(graph)
+
+ggsave("ex1_30x_cov.png")
+```
+
